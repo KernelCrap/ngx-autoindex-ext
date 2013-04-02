@@ -54,6 +54,39 @@ Example output for the above config::
   </body>
   </html>
 
+Example stylesheet:
+===================
+An example of how the table could be styled::
+
+  body, html {
+    background: #FFFFFF;
+    font-family: Consolas, Courier New, monospace, serif;
+    font-size: 18px;
+  }
+  table {
+    border: 1px solid #999;
+    width: 100%;
+  }
+  th, td {
+    padding: 0.1em;
+    padding-left: 0.5em;
+  }
+  th {
+    background: #F6F6F6;
+    text-align: left;
+  }
+  tr:nth-child(even) {
+    background: #F6F6F6;
+  }
+  a, a:visited {
+    color: #08C;
+    text-decoration: none;
+  }
+  a:hover,a:focus{
+    color: #005580;
+    text-decoration: underline
+  }
+
 Configuration
 =============
 autoindex_ext

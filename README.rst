@@ -11,9 +11,9 @@ Requirements
 ============
 * `nginx/1.2.x <http://nginx.org/>`__ (created for nginx/1.2.7)
 
-Example
+Examples
 =======
-Example config with stylesheet::
+Example config::
 
   location / {
     autoindex_ext              on;
@@ -21,9 +21,18 @@ Example config with stylesheet::
     autoindex_ext_stylesheet   "http://cdn.example.com/css/autoindex.css";
   }
 
+Another example (directory)::
+
+  location /example {
+    alias                      /var/www/public;
+    autoindex_ext              on;
+    autoindex_ext_exact_size   off;
+    autoindex_ext_stylesheet   "http://cdn.example.com/css/autoindex.css";
+  }
+
 Output
 ======
-Example output for the above config::
+Example output for the above configs::
 
   <!doctype html>
   <html lang="en">

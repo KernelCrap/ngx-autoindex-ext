@@ -12,7 +12,7 @@ Requirements
 * `nginx/1.2.x <http://nginx.org/>`__ (created for nginx/1.2.7)
 
 Examples
-=======
+========
 Example config::
 
   location / {

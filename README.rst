@@ -5,7 +5,7 @@ Simple autoindex module for nginx that outputs a table of directories and files.
 
 Warning
 =======
-This was written because I was not satisfied with the stock autoindex module for nginx, please be aware that there may be dragons ahead.
+Please be aware that there may be dragons ahead.
 
 Requirements
 ============

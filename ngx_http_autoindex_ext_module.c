@@ -144,17 +144,17 @@ ngx_http_autoindex_ext_handler(ngx_http_request_t *r)
 	ngx_str_t							path;
 	ngx_dir_t							dir;
 	off_t								s;
-	size_t								i, response_size, length, root, size;
+	size_t								i, response_size, length, root, size, is_root;
 
 	// First, we need to have access to the config.
 	conf = ngx_http_get_module_loc_conf(r, ngx_http_autoindex_ext_module);
 	if (!conf)
 		return NGX_HTTP_INTERNAL_SERVER_ERROR;
-	
+
 	// Make sure indexing is enabled.
 	if (!conf->enabled)
 		return NGX_DECLINED;
-	
+
 	// Only handle folders (this will allow files to be served).
 	if (r->uri.data[r->uri.len - 1] != '/')
 		return NGX_DECLINED;
@@ -186,6 +186,15 @@ ngx_http_autoindex_ext_handler(ngx_http_request_t *r)
 	last = ngx_http_map_uri_to_path(r, &path, &root, 255);
 	if (last == NULL)
 		return NGX_HTTP_INTERNAL_SERVER_ERROR;
+
+	// Set the actual path size.
+	path.len = last - path.data;
+    path.data[path.len] = '\0';	
+
+	// Is this the root directory?
+	is_root = 0;
+	if (path.len - 1 == root)
+		is_root = 1;
 
 	// Open the path for reading.
 	if (ngx_open_dir(&path, &dir) == NGX_ERROR)
@@ -267,7 +276,7 @@ ngx_http_autoindex_ext_handler(ngx_http_request_t *r)
 	response_size += sizeof(ngx_http_autoindex_ext_footer) - 1;
 
 	// We dont need the link to the parent directory in the root dir.
-	if (r->uri.len != 1)
+	if (is_root != 1)
 		response_size += sizeof(ngx_http_autoindex_ext_back) - 1;
 
 	// Title and stylesheet.
@@ -353,7 +362,7 @@ ngx_http_autoindex_ext_handler(ngx_http_request_t *r)
 	b->last = ngx_cpymem(b->last, ngx_http_autoindex_ext_header2, sizeof(ngx_http_autoindex_ext_header2) - 1);
 
 	// Only have the parent directory link in sub directories.
-	if (r->uri.len != 1)
+	if (is_root != 1)
 		b->last = ngx_cpymem(b->last, ngx_http_autoindex_ext_back, sizeof(ngx_http_autoindex_ext_back) - 1);
 
 	// Add all the entries to the table.
